@@ -1,4 +1,4 @@
-# Feasibility Processes
+# Fhir Store Controller Processes
 
 Business processes for the Fhir Store Controller of MII Transit project as plugins for the [Data Sharing Framework][1].
 
