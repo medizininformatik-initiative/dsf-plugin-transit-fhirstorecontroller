@@ -9,7 +9,6 @@ import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
 import dev.dsf.bpe.v1.constants.CodeSystems;
 import dev.dsf.bpe.v1.variables.Variables;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.hl7.fhir.r4.model.Identifier;
@@ -35,7 +34,7 @@ public class DeleteStore extends AbstractServiceDelegate {
     }
 
     @Override
-    protected void doExecute(DelegateExecution delegateExecution, Variables variables) throws Exception {
+    protected void doExecute(DelegateExecution delegateExecution, Variables variables) {
         Task task = variables.getStartTask();
 
         String projectIdentifier = getProjectIdentifier(task);

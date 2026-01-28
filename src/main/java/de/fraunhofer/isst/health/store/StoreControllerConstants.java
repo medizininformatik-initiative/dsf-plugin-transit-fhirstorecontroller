@@ -23,9 +23,6 @@ public interface StoreControllerConstants
 	String CODESYSTEM_DMU_TOOLS = "http://datamanagementunit.eu/fhir/CodeSystem/dmu-tools";
 	String CODESYSTEM_DMU_VALUE_STORE_URL = "store-url";
 
-	//EXECUTION
-	String BPMN_EXECUTION_VARIABLE_STORE_URL = "storeUrl";
-
 	String FHIRSTOREURL = "fhirContainerUrl";
 
 	String STORE_STATUS = "store-status";
