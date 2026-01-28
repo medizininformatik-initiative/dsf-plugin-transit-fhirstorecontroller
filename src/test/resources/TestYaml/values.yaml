@@ -1,0 +1,128 @@
+global:
+  env: develop
+
+hapi-inbox:
+  postgresql:
+    enabled: false
+  externalDatabase:
+    database: hapi
+    user: hapi
+    existingSecret: hapi.acid-dmu-hapi.credentials.postgresql.acid.zalan.do
+    existingSecretKey: password
+    host: acid-dmu-hapi
+  ingress:
+    enabled: false
+  extraEnv:
+    - name: HAPI_FHIR_SUBSCRIPTION_RESTHOOK_ENABLED
+      value: "true"
+    - name: HAPI_FHIR_ALLOWED_BUNDLE_TYPES
+      value: "COLLECTION,DOCUMENT,MESSAGE,TRANSACTION"
+    - name: HAPI_FHIR_BULK_EXPORT_ENABLED
+      value: "true"
+processEngine:
+  jdkJavaOptions: "-XX:MaxRAMPercentage=70.0 -XX:MinRAMPercentage=70.0 -XX:InitialRAMPercentage=70.0"
+  profile: "dmu-development"
+  dsfFhirTlsSecret: dms-bpe-certificate
+  dockerImage: "numforschungsdatenplattform/dmu-process-engine"
+  dockerTag: "develop"
+  dsfEndpoint: "https://dms-fhir.develop-dmu.dmu.dev.num-rdp.de/fhir/"
+  inboxEndpoint: "http://develop-dmu-hapi-inbox:8080/"
+  orgName: "Test_DMS"
+
+projects:
+  dataSourceUrl: "jdbc:postgresql://acid-dmu-projects/projects"
+  databaseCredentialsSecretName: "projects.acid-dmu-projects.credentials.postgresql.acid.zalan.do"
+  jdkJavaOptions: "-XX:MaxRAMPercentage=70.0 -XX:MinRAMPercentage=70.0 -XX:InitialRAMPercentage=70.0"
+  dockerImage: "numforschungsdatenplattform/dmu-fhir-store"
+  dockerTag: "develop"
+  profile: "docker-it"
+
+dmuGateway:
+  jdkJavaOptions: ""
+  profile: "routes-reduced-dev"
+  envIndicator: dev
+  dockerImage: "numforschungsdatenplattform/dmu-gateway"
+  dockerTag: "develop"
+
+controller:
+  profile: "dmu-development"
+  jdkJavaOptions: "-XX:MaxRAMPercentage=70.0 -XX:MinRAMPercentage=70.0 -XX:InitialRAMPercentage=70.0"
+  docker:
+    imageName: numforschungsdatenplattform/dmu-fhir-store-controller
+    imageVersion: develop
+  spring:
+    datasource:
+      url: jdbc:postgresql://acid-fhir-store-controller/fhirstorecontroller
+      credentialsSecretName: fhirstorecontroller.acid-fhir-store-controller.credentials.postgresql.acid.zalan.do
+  envIndicator: "dev"
+
+  app:
+    manifests:
+      project:
+        id: "p-z7v6v"
+        prefix: "c-xsvvn"
+      storesHostname: "dmu-fhir-store"
+      storesProtocol: "http"
+      fhirstore:
+        imageVersion: "develop"
+        profile: "docker-it"
+    argo:
+      charts:
+        repoUrl: "https://github.com/NUM-Forschungsdatenplattform/dmu-argocd-charts.git"
+        credentialsSecretName: "fhir-store-controller.github.credentials"
+        repoBranch: "development"
+
+transitService:
+  imageName: numforschungsdatenplattform/transit-service
+  imageVersion: develop
+  jdkJavaOptions: "-XX:MaxRAMPercentage=70.0 -XX:MinRAMPercentage=70.0 -XX:InitialRAMPercentage=70.0"
+  projectsURL: "http://dmu-projects/fhir/"
+  controllerURL: "http://dmu-fhir-store-controller/api/stores"
+  camundaURL: "http://camunda-service/engine-rest/"
+  dsfUrl: "https://dms-fhir.develop-dmu.dmu.dev.num-rdp.de/fhir/"
+  inboxUrl: "http://develop-dmu-hapi-inbox:8080/fhir/"
+  dsfwebsocketurl: "wss://dms-fhir.develop-dmu.dmu.dev.num-rdp.de/fhir/ws"
+  resultStoragePath: "/data/"
+  baseDownloadUrl: "file-storage.develop-dmu.dmu.dev.num-rdp.de/dl/"
+  clientSecret: dms-bpe-certificate
+  secrets:
+    imagePull: fh-artifactory
+
+transitBpe:
+  imageName: numforschungsdatenplattform/transit-bpe
+  imageVersion: develop
+  jdkJavaOptions: "-XX:MaxRAMPercentage=70.0 -XX:MinRAMPercentage=70.0 -XX:InitialRAMPercentage=70.0"
+  secrets:
+    imagePull: fh-artifactory
+    credentials: transit-bpe-ui-secret
+  spring:
+    datasource:
+      url: jdbc:postgresql://acid-dmu-bpe/bpedb
+      credentialsSecretName: bpedb.acid-dmu-bpe.credentials.postgresql.acid.zalan.do
+
+fileStorage:
+  imageName: numforschungsdatenplattform/dmu-file-storage
+  imageVersion: develop
+  postgres:
+    url: file-storage-postgres-r.develop-dmu.svc.cluster.local:5432
+    database: nginxaccess
+    username: nginxaccess
+    schema: nginx
+    secret: file-storage-postgres-app
+
+gPAS:
+  mysql:
+    imageName: mysql
+    imageVersion: 8
+  app:
+    imageName: mosaicgreifswald/gpas
+    imageVersion: 2024.3.0
+
+fhirStore:
+  profile: docker-it
+  jdkJavaOptions: -XX:MaxRAMPercentage=70.0 -XX:MinRAMPercentage=70.0 -XX:InitialRAMPercentage=70.0
+  imageVersion: develop
+
+stores:
+  - 51ca9fd5fe25483a87a9eb6d8f214f8pwetransit2
+  - 51ca9fd5fe25483a87a9eb6d8f214f8pwetransit3

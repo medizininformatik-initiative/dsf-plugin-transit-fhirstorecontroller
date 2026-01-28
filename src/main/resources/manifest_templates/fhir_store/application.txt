@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fs-[(${envIndicator})]-[(${storeId})]
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: fs-[(${envIndicator})]-[(${storeId})]
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: [(${chartsRepoBaseDir})]/[(${storeId})]
+    repoURL: [(${chartsRepoUrl})]
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+      version: v3
+      passCredentials: true
+  project: dmu
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PruneLast=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=background
+  revisionHistoryLimit: 1

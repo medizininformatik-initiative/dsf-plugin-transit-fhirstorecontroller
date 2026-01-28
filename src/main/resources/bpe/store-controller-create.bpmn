@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1uxomks" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="datamanagementuniteu_storeControllerCreate" isExecutable="true" camunda:versionTag="#{version}">
+    <bpmn:startEvent id="createFhirStore" name="Start FHIR-Store creation">
+      <bpmn:outgoing>Flow_1ej84uc</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0axkcql" messageRef="Message_0hlt9ao" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1ej84uc" sourceRef="createFhirStore" targetRef="prepareStoreCreation" />
+    <bpmn:serviceTask id="prepareStoreCreation" name="Prepare Store Creation" camunda:class="de.fraunhofer.isst.health.store.service.create.PrepareStoreCreation">
+      <bpmn:incoming>Flow_1ej84uc</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hlb8tx</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sendTask id="sendStoreCreated" name="Send Store Created" camunda:class="de.fraunhofer.isst.health.store.message.SendCreatedStore">
+      <bpmn:extensionElements>
+        <camunda:field name="profile">
+          <camunda:string>http://datamanagementunit.eu/fhir/StructureDefinition/task-created-store|#{version}</camunda:string>
+        </camunda:field>
+        <camunda:field name="messageName">
+          <camunda:string>createdStore</camunda:string>
+        </camunda:field>
+        <camunda:field name="instantiatesCanonical">
+          <camunda:string>http://datamanagementunit.eu/bpe/Process/storeControllerCreate|#{version}</camunda:string>
+        </camunda:field>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0hr5xns</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bjq220</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="Event_1h6q36t">
+      <bpmn:incoming>Flow_0bjq220</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0bjq220" sourceRef="sendStoreCreated" targetRef="Event_1h6q36t" />
+    <bpmn:sequenceFlow id="Flow_0hlb8tx" sourceRef="prepareStoreCreation" targetRef="Activity_189eorn" />
+    <bpmn:serviceTask id="Activity_189eorn" name="Create Kubernetes Charts" camunda:class="de.fraunhofer.isst.health.store.service.create.CreateKubernetesChart">
+      <bpmn:incoming>Flow_0hlb8tx</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qkh04h</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:intermediateCatchEvent id="Event_1szs61c">
+      <bpmn:incoming>Flow_06zyfij</bpmn:incoming>
+      <bpmn:incoming>Flow_0qkh04h</bpmn:incoming>
+      <bpmn:outgoing>Flow_06p3ky1</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0ga97uz">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="Gateway_0sut7j6">
+      <bpmn:incoming>Flow_0esrvtf</bpmn:incoming>
+      <bpmn:outgoing>Flow_06zyfij</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0hr5xns</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_1ljy86y" name="Check Store Created" camunda:class="de.fraunhofer.isst.health.store.service.create.CheckStoreCreated">
+      <bpmn:incoming>Flow_06p3ky1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0esrvtf</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0qkh04h" sourceRef="Activity_189eorn" targetRef="Event_1szs61c" />
+    <bpmn:sequenceFlow id="Flow_06zyfij" sourceRef="Gateway_0sut7j6" targetRef="Event_1szs61c">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('store-status')!='created'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_06p3ky1" sourceRef="Event_1szs61c" targetRef="Activity_1ljy86y" />
+    <bpmn:sequenceFlow id="Flow_0esrvtf" sourceRef="Activity_1ljy86y" targetRef="Gateway_0sut7j6" />
+    <bpmn:sequenceFlow id="Flow_0hr5xns" sourceRef="Gateway_0sut7j6" targetRef="sendStoreCreated">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('store-status')=='created'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:textAnnotation id="TextAnnotation_16cji7e">
+      <bpmn:text>Send DSF-Task</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1p63g0j" associationDirection="None" sourceRef="sendStoreCreated" targetRef="TextAnnotation_16cji7e" />
+  </bpmn:process>
+  <bpmn:message id="Message_0hlt9ao" name="createFhirStore" />
+  <bpmn:message id="Message_3ourfav" name="deleteFhirStore" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="datamanagementuniteu_storeControllerCreate">
+      <bpmndi:BPMNShape id="Event_1hky84l_di" bpmnElement="createFhirStore">
+        <dc:Bounds x="182" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="162" y="225" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_092hblt_di" bpmnElement="prepareStoreCreation">
+        <dc:Bounds x="290" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0hqz21e_di" bpmnElement="sendStoreCreated">
+        <dc:Bounds x="1130" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1h6q36t_di" bpmnElement="Event_1h6q36t">
+        <dc:Bounds x="1292" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_17rht81" bpmnElement="Activity_189eorn">
+        <dc:Bounds x="540" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0zkwz5j" bpmnElement="Event_1szs61c">
+        <dc:Bounds x="802" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_03fnbvs" bpmnElement="Gateway_0sut7j6" isMarkerVisible="true">
+        <dc:Bounds x="905" y="295" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_15q0uyg" bpmnElement="Activity_1ljy86y">
+        <dc:Bounds x="880" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_16cji7e_di" bpmnElement="TextAnnotation_16cji7e">
+        <dc:Bounds x="1230" y="80" width="100" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1ej84uc_di" bpmnElement="Flow_1ej84uc">
+        <di:waypoint x="218" y="200" />
+        <di:waypoint x="290" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bjq220_di" bpmnElement="Flow_0bjq220">
+        <di:waypoint x="1230" y="200" />
+        <di:waypoint x="1292" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hlb8tx_di" bpmnElement="Flow_0hlb8tx">
+        <di:waypoint x="390" y="200" />
+        <di:waypoint x="540" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_13oou6w" bpmnElement="Flow_0qkh04h">
+        <di:waypoint x="640" y="200" />
+        <di:waypoint x="802" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_07faxcd" bpmnElement="Flow_06zyfij">
+        <di:waypoint x="905" y="320" />
+        <di:waypoint x="820" y="320" />
+        <di:waypoint x="820" y="218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0de5j3s" bpmnElement="Flow_06p3ky1">
+        <di:waypoint x="838" y="200" />
+        <di:waypoint x="880" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0x1lpno" bpmnElement="Flow_0esrvtf">
+        <di:waypoint x="930" y="240" />
+        <di:waypoint x="930" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hr5xns_di" bpmnElement="Flow_0hr5xns">
+        <di:waypoint x="955" y="320" />
+        <di:waypoint x="1180" y="320" />
+        <di:waypoint x="1180" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1p63g0j_di" bpmnElement="Association_1p63g0j">
+        <di:waypoint x="1218" y="160" />
+        <di:waypoint x="1266" y="110" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

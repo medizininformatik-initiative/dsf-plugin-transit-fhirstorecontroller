@@ -1,0 +1,6 @@
+apiVersion: v2
+name: fs-[(${envIndicator})]-[(${storeId})]
+description: A Helm chart for fhir store [(${storeId})]
+type: application
+version: 1.0.0
+appVersion: 1.0.0

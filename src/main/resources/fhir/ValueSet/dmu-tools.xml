@@ -1,0 +1,27 @@
+<ValueSet xmlns="http://hl7.org/fhir">
+	<meta>
+		<tag>
+			<system value="http://dsf.dev/fhir/CodeSystem/read-access-tag" />
+			<code value="ALL" />
+		</tag>
+	</meta>
+	<url value="http://datamanagementunit.eu/fhir/ValueSet/dmu-tools"/>
+	<!-- version managed by bpe -->
+	<version value="#{version}" />
+	<name value="DmuTools" />
+	<title value="DmuTools" />
+	<!-- status managed by bpe -->
+	<status value="unknown" />
+	<experimental value="false"/>
+	<!-- date managed by bpe -->
+	<date value="#{date}"/>
+	<publisher value="Fraunhofer ISST" />
+	<description value="ValueSet with standard values for the Transit DMU Tools processes" />
+	<immutable value="true"/>
+	<compose>
+		<include>
+			<system value="http://datamanagementunit.eu/fhir/CodeSystem/dmu-tools"/>
+			<version value="#{version}" />
+		</include>
+	</compose>
+</ValueSet> 

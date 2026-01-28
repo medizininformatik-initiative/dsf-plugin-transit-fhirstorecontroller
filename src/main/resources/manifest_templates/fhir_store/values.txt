@@ -1,0 +1,7 @@
+---
+storeId: [(${storeId})]
+
+fhirStore:
+  profile: [(${fhirStoreProfile})]
+  jdkJavaOptions: "-XX:MaxRAMPercentage=70.0 -XX:MinRAMPercentage=70.0 -XX:InitialRAMPercentage=70.0"
+  imageVersion: [(${fhirStoreImageVersion})]

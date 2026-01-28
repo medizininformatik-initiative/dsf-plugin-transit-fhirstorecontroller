@@ -1,0 +1,60 @@
+<Task xmlns="http://hl7.org/fhir">
+    <meta>
+        <profile value="http://datamanagementunit.eu/fhir/StructureDefinition/task-create-store|1.0"/>
+    </meta>
+    <instantiatesCanonical value="http://datamanagementunit.eu/bpe/Process/storeControllerCreate|1.0"/>
+    <status value="requested"/>
+    <intent value="order"/>
+    <!-- Example: <authoredOn value="2022-11-16T15:00:00+01:00"/> -->
+    <authoredOn value="2025-05-14T10:00:00+01:00"/>
+    <requester>
+        <type value="Organization"/>
+        <identifier>
+            <system value="http://dsf.dev/sid/organization-identifier"/>
+            <!-- Example: <value value="forschen-fuer-gesundheit.de"/> -->
+            <value value="cos.dsf.test"/>
+        </identifier>
+    </requester>
+    <restriction>
+        <recipient>
+            <type value="Organization"/>
+            <identifier>
+                <system value="http://dsf.dev/sid/organization-identifier"/>
+                <!-- Example: <value value="forschen-fuer-gesundheit.de"/> -->
+                <value value="cos.dsf.test"/>
+            </identifier>
+        </recipient>
+    </restriction>
+    <input>
+        <type>
+            <coding>
+                <system value="http://dsf.dev/fhir/CodeSystem/bpmn-message"/>
+                <code value="message-name"/>
+            </coding>
+        </type>
+        <valueString value="createFhirStore"/>
+    </input>
+    <input>
+        <type>
+            <coding>
+                <system value="http://dsf.dev/fhir/CodeSystem/bpmn-message"/>
+                <code value="business-key"/>
+            </coding>
+        </type>
+        <valueString value="51ca9fd5-fe25-483a-87a9-eb6d8f214f8p"/>
+    </input>
+    <input>
+        <type>
+            <coding>
+                <system value="http://medizininformatik-initiative.de/fhir/CodeSystem/data-sharing"/>
+                <code value="project-identifier"/>
+            </coding>
+        </type>
+        <valueIdentifier>
+            <system value="http://medizininformatik-initiative.de/sid/project-identifier"/>
+            <!-- Example: <value value="VHF-MI-dezentral"/> -->
+            <!-- Example: <value value="VHF-MI-2-zentral"/> -->
+            <!-- Example: <value value="WE-STORM"/> -->
+            <value value="WE-TRANSIT2"/> </valueIdentifier>
+    </input>
+</Task>

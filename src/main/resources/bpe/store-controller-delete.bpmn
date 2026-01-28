@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1jubz66" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.38.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="datamanagementuniteu_storeControllerDelete" isExecutable="true" camunda:versionTag="#{version}">
+    <bpmn:startEvent id="startFhirStoreDeletion" name="Start FHIR-Store deletion">
+      <bpmn:outgoing>Flow_0qevgj7</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1hls0rf" messageRef="Message_3ourfav" />
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0wfsak4">
+      <bpmn:incoming>Flow_03fw2an</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_03vibpt" sourceRef="deleteStore" targetRef="Event_00c782b" />
+    <bpmn:intermediateCatchEvent id="Event_00c782b" name="wait 1 min">
+      <bpmn:incoming>Flow_03vibpt</bpmn:incoming>
+      <bpmn:incoming>Flow_02g1q9g</bpmn:incoming>
+      <bpmn:outgoing>Flow_0p8n7jv</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0wvub81">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_0p8n7jv" sourceRef="Event_00c782b" targetRef="checkStore" />
+    <bpmn:sequenceFlow id="Flow_0qevgj7" sourceRef="startFhirStoreDeletion" targetRef="deleteStore" />
+    <bpmn:sequenceFlow id="Flow_1nnejet" sourceRef="checkStore" targetRef="Gateway_1rl5hot" />
+    <bpmn:serviceTask id="deleteStore" name="Delete Store" camunda:class="de.fraunhofer.isst.health.store.service.delete.DeleteStore">
+      <bpmn:incoming>Flow_0qevgj7</bpmn:incoming>
+      <bpmn:outgoing>Flow_03vibpt</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="checkStore" name="Check Store availability" camunda:class="de.fraunhofer.isst.health.store.service.delete.CheckStoreDeleted">
+      <bpmn:incoming>Flow_0p8n7jv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nnejet</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1rl5hot" name="Store deleted?">
+      <bpmn:incoming>Flow_1nnejet</bpmn:incoming>
+      <bpmn:outgoing>Flow_03fw2an</bpmn:outgoing>
+      <bpmn:outgoing>Flow_02g1q9g</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_03fw2an" name="yes" sourceRef="Gateway_1rl5hot" targetRef="Event_0wfsak4">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('store-status')=='deleted'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_02g1q9g" name="no" sourceRef="Gateway_1rl5hot" targetRef="Event_00c782b">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('store-status')!='deleted'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:message id="Message_3ourfav" name="deleteFhirStore" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="datamanagementuniteu_storeControllerDelete">
+      <bpmndi:BPMNShape id="Event_0hjdqrc_di" bpmnElement="startFhirStoreDeletion">
+        <dc:Bounds x="182" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="235" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1wkyj65_di" bpmnElement="Event_00c782b">
+        <dc:Bounds x="422" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="416" y="235" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1j5ooj7_di" bpmnElement="deleteStore">
+        <dc:Bounds x="270" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ovdy3j_di" bpmnElement="checkStore">
+        <dc:Bounds x="520" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1rl5hot_di" bpmnElement="Gateway_1rl5hot" isMarkerVisible="true">
+        <dc:Bounds x="665" y="185" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="654" y="242" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0wfsak4_di" bpmnElement="Event_0wfsak4">
+        <dc:Bounds x="792" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0qevgj7_di" bpmnElement="Flow_0qevgj7">
+        <di:waypoint x="218" y="210" />
+        <di:waypoint x="270" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03vibpt_di" bpmnElement="Flow_03vibpt">
+        <di:waypoint x="370" y="210" />
+        <di:waypoint x="422" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02g1q9g_di" bpmnElement="Flow_02g1q9g">
+        <di:waypoint x="690" y="185" />
+        <di:waypoint x="690" y="100" />
+        <di:waypoint x="440" y="100" />
+        <di:waypoint x="440" y="192" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="559" y="82" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p8n7jv_di" bpmnElement="Flow_0p8n7jv">
+        <di:waypoint x="458" y="210" />
+        <di:waypoint x="520" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nnejet_di" bpmnElement="Flow_1nnejet">
+        <di:waypoint x="620" y="210" />
+        <di:waypoint x="665" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03fw2an_di" bpmnElement="Flow_03fw2an">
+        <di:waypoint x="715" y="210" />
+        <di:waypoint x="792" y="210" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="745" y="192" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

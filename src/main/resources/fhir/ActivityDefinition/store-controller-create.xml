@@ -1,0 +1,71 @@
+<ActivityDefinition xmlns="http://hl7.org/fhir">
+	<meta>
+		<tag>
+			<system value="http://dsf.dev/fhir/CodeSystem/read-access-tag" />
+			<code value="ALL" />
+		</tag>
+	</meta>
+	<extension url="http://dsf.dev/fhir/StructureDefinition/extension-process-authorization">
+		<extension url="message-name">
+			<valueString value="createFhirStore" />
+		</extension>
+		<extension url="task-profile">
+			<valueCanonical value="http://datamanagementunit.eu/fhir/StructureDefinition/task-create-store|#{version}" />
+		</extension>
+		<extension url="requester">
+			<valueCoding>
+				<system value="http://dsf.dev/fhir/CodeSystem/process-authorization"/>
+				<code value="LOCAL_ALL"/>
+			</valueCoding>
+		</extension>
+		<extension url="recipient">
+			<valueCoding>
+				<system value="http://dsf.dev/fhir/CodeSystem/process-authorization" />
+				<code value="LOCAL_ALL" />
+			</valueCoding>
+		</extension>
+	</extension>
+	<extension url="http://dsf.dev/fhir/StructureDefinition/extension-process-authorization">
+		<extension url="message-name">
+			<valueString value="createdStore" />
+		</extension>
+		<extension url="task-profile">
+			<valueCanonical value="http://datamanagementunit.eu/fhir/StructureDefinition/task-created-store|#{version}" />
+		</extension>
+		<extension url="requester">
+			<valueCoding>
+				<system value="http://dsf.dev/fhir/CodeSystem/process-authorization"/>
+				<code value="LOCAL_ALL"/>
+			</valueCoding>
+		</extension>
+		<extension url="recipient">
+			<valueCoding>
+				<system value="http://dsf.dev/fhir/CodeSystem/process-authorization" />
+				<code value="LOCAL_ALL" />
+			</valueCoding>
+		</extension>
+	</extension>
+	<url
+			value="http://datamanagementunit.eu/bpe/Process/storeControllerCreate"/>
+	<!-- version managed by bpe -->
+	<version value="#{version}"/>
+	<name value="Create Store"/>
+	<title value="Create Store"/>
+	<subtitle value="Create Store Process in a DMS requested by a DMS"/>
+	<!-- status managed by bpe -->
+	<status value="unknown"/>
+	<experimental value="false"/>
+	<!-- date managed by bpe -->
+	<date value="#{date}"/>
+	<publisher value="Fraunhofer ISST"/>
+	<contact>
+		<name value="Fraunhofer ISST"/>
+		<telecom>
+			<system value="email"/>
+			<value value="support.healtchcare@isst.fraunhofer.de"/>
+		</telecom>
+	</contact>
+	<description
+			value="Process to Create Fhir Stores"/>
+	<kind value="Task"/>
+</ActivityDefinition>

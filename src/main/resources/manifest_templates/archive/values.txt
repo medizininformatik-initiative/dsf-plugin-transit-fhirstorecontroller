@@ -1,0 +1,5 @@
+---
+fileStorage:
+  imageName: nginx
+  imageVersion: 1.27.2
+  size: ${size}Mi
