@@ -76,6 +76,5 @@ jobs:
           files: ./artifact/mii-store-controller-1.0.0.1.jar
           draft: false
           prerelease: false
-          overwrite: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
