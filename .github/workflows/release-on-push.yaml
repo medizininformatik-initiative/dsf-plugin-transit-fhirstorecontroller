@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: store-controller-jar
-          path: ${{ github.workspace }}/target/mii-store-controller:jar:1.0.0.1
+          path: ${{ github.workspace }}/target/mii-store-controller-1.0.0.1.jar
 
   release:
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
         with:
           tag_name: 'v1.0.0'
           name: 'v1.0.0'
-          files: ./artifact/mii-store-controller/target/mii-store-controller:jar:1.0.0.1
+          files: ./artifact/mii-store-controller/target/mii-store-controller-1.0.0.1.jar
           draft: false
           prerelease: false
           overwrite: true
