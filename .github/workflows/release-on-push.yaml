@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - develop
-    tags:
-      - 'v1.0.0'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,8 +30,8 @@ jobs:
 
         uses: actions/upload-artifact@v4
         with:
-          name: transit-jar
-          path: transitService/target/mii-transit-dmst-1.0.0.1.jar
+          name: store-controller-jar
+          path: ${{ github.workspace }}/target/mii-store-controller:jar:1.0.0.1
 
   release:
     runs-on: ubuntu-latest
@@ -43,7 +42,7 @@ jobs:
 
         uses: actions/download-artifact@v4
         with:
-          name: transit-jar
+          name: store-controller-jar
           path: ./artifact
 
       - name: Create or Update Release
@@ -52,7 +51,7 @@ jobs:
         with:
           tag_name: 'v1.0.0'
           name: 'v1.0.0'
-          files: ./artifact/transitService/target/mii-transit-dmst-1.0.0.1.jar
+          files: ./artifact/mii-store-controller/target/mii-store-controller:jar:1.0.0.1
           draft: false
           prerelease: false
           overwrite: true
