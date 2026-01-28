@@ -2,7 +2,6 @@ package de.fraunhofer.isst.health.store;
 
 public interface StoreControllerConstants
 {
-
 	String PROCESS_TRANSIT_NAME_BASE = "datamanagementuniteu_";
 
 	String PROCESS_NAME_STORE_CONTROLLER_CREATE = "storeControllerCreate";
