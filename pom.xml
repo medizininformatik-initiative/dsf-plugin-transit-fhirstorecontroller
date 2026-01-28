@@ -38,7 +38,7 @@
 		<repository>
 			<id>github-mii</id>
 			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/medizininformatik-initiative/*</url>
+			<url>https://maven.pkg.github.com/medizininformatik-initiative/mii-processes-common</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
