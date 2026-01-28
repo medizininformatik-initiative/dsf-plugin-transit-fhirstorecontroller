@@ -64,13 +64,16 @@ jobs:
           name: store-controller-jar
           path: ./artifact
 
+      - name: Debug artifact contents
+        run: ls -R ./artifact
+
       - name: Create or Update Release
 
         uses: softprops/action-gh-release@v1
         with:
           tag_name: 'v1.0.0'
           name: 'v1.0.0'
-          files: ./artifact/mii-store-controller/target/mii-store-controller-1.0.0.1.jar
+          files: ./artifact/mii-store-controller-1.0.0.1.jar
           draft: false
           prerelease: false
           overwrite: true
