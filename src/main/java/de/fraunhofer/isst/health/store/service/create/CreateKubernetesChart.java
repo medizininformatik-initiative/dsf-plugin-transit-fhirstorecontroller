@@ -94,19 +94,19 @@ public class CreateKubernetesChart extends AbstractServiceDelegate
 		writeYaml(data, values);
 
 
-		File db = repositoryManagement.readFile("development/dmu/templates/databases/","dmu-stores-db.yaml");
-		data = loadYaml(db);
-		// Navigate to spec -> databases
-		Map<String, Object> spec = (Map<String, Object>) data.get("spec");
-		Map<String, String> databases = (Map<String, String>) spec.get("databases");
-		// If databases section doesn't exist, initialize it
-		if (databases == null) {
-			databases = new LinkedHashMap<>();
-		}
-		// Add a new database
-		databases.put("db"+storeId, "fhirstoreuser");
-		spec.put("databases", databases);
-		writeYaml(data, db);
+//		File db = repositoryManagement.readFile("development/dmu/templates/databases/","dmu-stores-db.yaml");
+//		data = loadYaml(db);
+//		// Navigate to spec -> databases
+//		Map<String, Object> spec = (Map<String, Object>) data.get("spec");
+//		Map<String, String> databases = (Map<String, String>) spec.get("databases");
+//		// If databases section doesn't exist, initialize it
+//		if (databases == null) {
+//			databases = new LinkedHashMap<>();
+//		}
+//		// Add a new database
+//		databases.put("db"+storeId, "fhirstoreuser");
+//		spec.put("databases", databases);
+//		writeYaml(data, db);
 
 		repositoryManagement.addAll();
 		repositoryManagement.commit("Added File Storage to archive project with id " + storeId);
