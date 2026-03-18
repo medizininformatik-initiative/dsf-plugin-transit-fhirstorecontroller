@@ -1,0 +1,13 @@
+{{- range $store := .Values.stores }}
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  # K8s resource name (must be unique)
+  name: {{ $store }}
+spec:
+  name: db{{ $store }}          # The actual DB name in Postgres
+  owner: stores      # Matches the role defined above
+  cluster:
+    name: dmu-stores-postgres
+{{- end }}

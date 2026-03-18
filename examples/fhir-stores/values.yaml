@@ -1,0 +1,8 @@
+fhirStore:
+  dataSourceUrl: jdbc:postgresql://dmu-stores-postgres-r.fhir-stores.svc.cluster.local:5432
+  databaseCredentialsSecretName: dmu-stores-postgres-app
+  profile: docker-it
+  jdkJavaOptions: -XX:MaxRAMPercentage=70.0 -XX:MinRAMPercentage=70.0 -XX:InitialRAMPercentage=70.0
+  dockerImage: numforschungsdatenplattform/dmu-fhir-store
+  imageVersion: develop
+stores:

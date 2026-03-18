@@ -1,0 +1,87 @@
+{{- range $store := .Values.stores }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dmu-fhir-store-{{ $store }}
+  labels:
+    app: dmu-fhir-store-{{ $store }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dmu-fhir-store-{{ $store }}
+  template:
+    metadata:
+      labels:
+        app: dmu-fhir-store-{{ $store }}
+    spec:
+      containers:
+        - name: dmu-fhir-store-{{ $store }}
+          image: {{$.Values.fhirStore.dockerImage}}:{{ $.Values.fhirStore.imageVersion }}
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 7979
+              name: management
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              memory: 3Gi
+          env:
+            - name: JDK_JAVA_OPTIONS
+              value: {{ $.Values.fhirStore.jdkJavaOptions }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ $.Values.fhirStore.profile }}
+            - name: HAPI_FHIR_BULK_EXPORT_ENABLED
+              value: "true"
+            - name: SPRING_DATASOURCE_URL
+              value: "{{ $.Values.fhirStore.profile }}"/db{{ $store }}
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{$.Values.projects.databaseCredentialsSecretName}}
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{$.Values.projects.databaseCredentialsSecretName}}
+                  key: password
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 7979
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 7979
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dmu-fhir-store-{{ $store }}
+  labels:
+    app: dmu-fhir-store-{{ $store }}
+spec:
+  selector:
+    app: dmu-fhir-store-{{ $store }}
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: management
+      port: 7979
+      protocol: TCP
+      targetPort: 7979
+---
+{{- end }}

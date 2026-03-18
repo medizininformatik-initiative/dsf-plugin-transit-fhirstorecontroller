@@ -1,0 +1,18 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: dmu-stores-postgres
+spec:
+  instances: 1
+  bootstrap:
+    initdb:
+      database: stores
+      owner: stores
+  postgresql:
+    parameters:
+      archive_timeout: 10min
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    storageClass: standard
+    size: 1Gi
