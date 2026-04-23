@@ -76,7 +76,7 @@ public class DeleteStore extends AbstractServiceDelegate {
 
         repositoryManagement.cloneInto("Repository-" + storeId);
 
-        logger.info("Modifying repository");
+        logger.info("Modifying repository!");
         //Delete entry in values.yaml
         File values = repositoryManagement.readFile("development/dmu/","values.yaml");
         Map<String, Object> data = loadYaml(values);
