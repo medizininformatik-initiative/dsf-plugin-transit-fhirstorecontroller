@@ -4,12 +4,11 @@ import de.fraunhofer.isst.health.store.StoreControllerConstants;
 import de.fraunhofer.isst.health.store.spring.config.StoreVariablesConfig;
 import de.fraunhofer.isst.health.store.utils.RepositoryManagement;
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
-import dev.dsf.bpe.v1.ProcessPluginApi;
-import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
-import dev.dsf.bpe.v1.constants.CodeSystems;
-import dev.dsf.bpe.v1.variables.Variables;
+import dev.dsf.bpe.v2.ProcessPluginApi;
+import dev.dsf.bpe.v2.activity.ServiceTask;
+import dev.dsf.bpe.v2.constants.CodeSystems;
+import dev.dsf.bpe.v2.variables.Variables;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.StringType;
@@ -24,23 +23,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DeleteStore extends AbstractServiceDelegate {
+public class DeleteStore implements ServiceTask {
     private static final Logger logger = LoggerFactory.getLogger(DeleteStore.class);
     StoreVariablesConfig storeVariablesConfig;
 
-    public DeleteStore(ProcessPluginApi api, StoreVariablesConfig storeVariablesConfig) {
-        super(api);
+    public DeleteStore(StoreVariablesConfig storeVariablesConfig) {
         this.storeVariablesConfig = storeVariablesConfig;
     }
 
     @Override
-    protected void doExecute(DelegateExecution delegateExecution, Variables variables) {
+    public void execute(ProcessPluginApi api, Variables variables) {
         Task task = variables.getStartTask();
 
         String projectIdentifier = getProjectIdentifier(task);
         variables.setString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_PROJECT_IDENTIFIER, projectIdentifier);
 
-        String businessKey = getBussinessKey(task);
+        String businessKey = getBussinessKey(task, api);
         variables.setString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_BUSSINESS_KEY, businessKey);
 
         logger.info(
@@ -157,7 +155,7 @@ public class DeleteStore extends AbstractServiceDelegate {
                         "No project-identifier present in task with id '" + task.getId() + "'"));
     }
 
-    private String getBussinessKey(Task task)
+    private String getBussinessKey(Task task, ProcessPluginApi api)
     {
         return api.getTaskHelper()
                 .getFirstInputParameterValue(task, CodeSystems.BpmnMessage.businessKey(), StringType.class)

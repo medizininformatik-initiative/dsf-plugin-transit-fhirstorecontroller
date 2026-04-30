@@ -1,30 +1,29 @@
 package de.fraunhofer.isst.health.store.service.create;
 
 import de.fraunhofer.isst.health.store.StoreControllerConstants;
-import de.fraunhofer.isst.health.store.spring.config.FhirStoreClientConfig;
-import de.medizininformatik_initiative.processes.common.fhir.client.FhirClient;
-import dev.dsf.bpe.v1.ProcessPluginApi;
-import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
-import dev.dsf.bpe.v1.variables.Variables;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
+import de.fraunhofer.isst.health.store.spring.config.StoreVariablesConfig;
+import dev.dsf.bpe.v2.ProcessPluginApi;
+import dev.dsf.bpe.v2.activity.ServiceTask;
+import dev.dsf.bpe.v2.client.dsf.DsfClient;
+import dev.dsf.bpe.v2.service.DsfClientProvider;
+import dev.dsf.bpe.v2.variables.Variables;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CheckStoreCreated extends AbstractServiceDelegate
+public class CheckStoreCreated implements ServiceTask
 {
 	private static final Logger logger = LoggerFactory.getLogger(CheckStoreCreated.class);
 
-	private final FhirStoreClientConfig fhirStoreClientConfig;
+	private final StoreVariablesConfig storeVariablesConfig;
 
-	public CheckStoreCreated(ProcessPluginApi api, FhirStoreClientConfig fhirStoreClientConfig)
+	public CheckStoreCreated(StoreVariablesConfig storeVariablesConfig)
 	{
-		super(api);
-		this.fhirStoreClientConfig = fhirStoreClientConfig;
+		this.storeVariablesConfig = storeVariablesConfig;
 	}
 
 	@Override
-	protected void doExecute(DelegateExecution execution, Variables variables)
+	public void execute(ProcessPluginApi api, Variables variables)
 	{
 		Task task = variables.getStartTask();
 
@@ -37,11 +36,10 @@ public class CheckStoreCreated extends AbstractServiceDelegate
 				projectIdentifier,
 				task.getId());
 
-		fhirStoreClientConfig.setFhirStoreBaseUrl(storeUrl);
-		FhirClient fhirClient = fhirStoreClientConfig.fhirClientFactory().getFhirClient();
+		DsfClient client = getDsfClientForFhirStore(api.getDsfClientProvider(), storeUrl);
 		try
 		{
-			fhirClient.testConnection();
+			client.getConformance();
 			variables.setString(StoreControllerConstants.STORE_STATUS, "created");
 			logger.info(
 					"Store Created for approved data sharing project [project-identifier: {}; task-id: {}]",
@@ -50,6 +48,10 @@ public class CheckStoreCreated extends AbstractServiceDelegate
 		}catch (Exception e){
 			variables.setString(StoreControllerConstants.STORE_STATUS, "not-created");
 		}
+	}
 
+	private DsfClient getDsfClientForFhirStore(DsfClientProvider provider, String storeUrl)
+	{
+		return provider.getByEndpointUrl(storeUrl);
 	}
 }

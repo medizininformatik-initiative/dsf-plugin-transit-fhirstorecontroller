@@ -3,11 +3,10 @@ package de.fraunhofer.isst.health.store.service.create;
 import de.fraunhofer.isst.health.store.StoreControllerConstants;
 import de.fraunhofer.isst.health.store.spring.config.StoreVariablesConfig;
 import de.fraunhofer.isst.health.store.utils.RepositoryManagement;
-import dev.dsf.bpe.v1.ProcessPluginApi;
-import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
-import dev.dsf.bpe.v1.variables.Variables;
+import dev.dsf.bpe.v2.ProcessPluginApi;
+import dev.dsf.bpe.v2.activity.ServiceTask;
+import dev.dsf.bpe.v2.variables.Variables;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
@@ -21,20 +20,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreateKubernetesChart extends AbstractServiceDelegate
+public class CreateKubernetesChart implements ServiceTask
 {
 	private static final Logger logger = LoggerFactory.getLogger(CreateKubernetesChart.class);
 
 	StoreVariablesConfig storeVariablesConfig;
 
-	public CreateKubernetesChart(ProcessPluginApi api, StoreVariablesConfig storeVariablesConfig)
+	public CreateKubernetesChart(StoreVariablesConfig storeVariablesConfig)
 	{
-		super(api);
 		this.storeVariablesConfig = storeVariablesConfig;
 	}
 
 	@Override
-	protected void doExecute(DelegateExecution execution, Variables variables)
+	public void execute(ProcessPluginApi api, Variables variables)
 	{
 		Task task = variables.getStartTask();
 

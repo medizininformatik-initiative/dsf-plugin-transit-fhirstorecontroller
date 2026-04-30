@@ -1,6 +1,6 @@
 package de.fraunhofer.isst.health.store.spring.config;
 
-import dev.dsf.bpe.v1.documentation.ProcessDocumentation;
+import dev.dsf.bpe.v2.documentation.ProcessDocumentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

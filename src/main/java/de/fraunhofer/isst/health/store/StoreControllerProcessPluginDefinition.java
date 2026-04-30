@@ -1,9 +1,8 @@
 package de.fraunhofer.isst.health.store;
 
-import de.fraunhofer.isst.health.store.spring.config.FhirStoreClientConfig;
 import de.fraunhofer.isst.health.store.spring.config.StoreControllerConfig;
 import de.fraunhofer.isst.health.store.spring.config.StoreVariablesConfig;
-import dev.dsf.bpe.v1.ProcessPluginDefinition;
+import dev.dsf.bpe.v2.ProcessPluginDefinition;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,8 +10,8 @@ import java.util.Map;
 
 public class StoreControllerProcessPluginDefinition implements ProcessPluginDefinition
 {
-	public static final String VERSION = "1.0.0.1";
-	public static final LocalDate RELEASE_DATE = LocalDate.of(2025, 9, 03);
+	public static final String VERSION = "1.0.0.2";
+	public static final LocalDate RELEASE_DATE = LocalDate.of(2026, 04, 24);
 
 	@Override
 	public String getName()
@@ -41,8 +40,7 @@ public class StoreControllerProcessPluginDefinition implements ProcessPluginDefi
 	@Override
 	public List<Class<?>> getSpringConfigurations()
 	{
-		return List.of(StoreControllerConfig.class, StoreVariablesConfig.class, FhirStoreClientConfig.class
-				);
+		return List.of(StoreControllerConfig.class, StoreVariablesConfig.class);
 	}
 
 	@Override

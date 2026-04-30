@@ -1,29 +1,26 @@
 package de.fraunhofer.isst.health.store.service.delete;
 
 import de.fraunhofer.isst.health.store.StoreControllerConstants;
-import de.fraunhofer.isst.health.store.spring.config.FhirStoreClientConfig;
-import de.medizininformatik_initiative.processes.common.fhir.client.FhirClient;
-import dev.dsf.bpe.v1.ProcessPluginApi;
-import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
-import dev.dsf.bpe.v1.variables.Variables;
-import org.camunda.bpm.engine.delegate.BpmnError;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.JavaDelegate;
+import de.fraunhofer.isst.health.store.spring.config.StoreVariablesConfig;
+import dev.dsf.bpe.v2.ProcessPluginApi;
+import dev.dsf.bpe.v2.activity.ServiceTask;
+import dev.dsf.bpe.v2.client.dsf.DsfClient;
+import dev.dsf.bpe.v2.service.DsfClientProvider;
+import dev.dsf.bpe.v2.variables.Variables;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CheckStoreDeleted extends AbstractServiceDelegate implements JavaDelegate {
+public class CheckStoreDeleted implements ServiceTask {
     private static final Logger logger = LoggerFactory.getLogger(CheckStoreDeleted.class);
-    private final FhirStoreClientConfig fhirStoreClientConfig;
+    private final StoreVariablesConfig storeVariablesConfig;
 
-    public CheckStoreDeleted(ProcessPluginApi api, FhirStoreClientConfig fhirStoreClientConfig) {
-        super(api);
-        this.fhirStoreClientConfig = fhirStoreClientConfig;
+    public CheckStoreDeleted(StoreVariablesConfig storeVariablesConfig) {
+        this.storeVariablesConfig = storeVariablesConfig;
     }
 
     @Override
-    protected void doExecute(DelegateExecution delegateExecution, Variables variables) throws BpmnError {
+    public void execute(ProcessPluginApi api, Variables variables) {
         Task task = variables.getStartTask();
         String projectIdentifier = variables.getString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_PROJECT_IDENTIFIER);
         String storeUrl = variables.getString(StoreControllerConstants.FHIRSTOREURL);
@@ -33,13 +30,17 @@ public class CheckStoreDeleted extends AbstractServiceDelegate implements JavaDe
                 projectIdentifier,
                 task.getId());
 
-        fhirStoreClientConfig.setFhirStoreBaseUrl(storeUrl);
-        FhirClient fhirClient = fhirStoreClientConfig.fhirClientFactory().getFhirClient();
+        DsfClient client = getDsfClientForFhirStore(api.getDsfClientProvider(), storeUrl);
         try
         {
-            fhirClient.testConnection();
+            client.getConformance();
         }catch (Exception e){
             variables.setString(StoreControllerConstants.STORE_STATUS, "deleted");
         }
+    }
+
+    private DsfClient getDsfClientForFhirStore(DsfClientProvider provider, String storeUrl)
+    {
+        return provider.getByEndpointUrl(storeUrl);
     }
 }
