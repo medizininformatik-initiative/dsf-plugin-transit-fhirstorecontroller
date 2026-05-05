@@ -14,9 +14,17 @@ jobs:
       packages: read
 
     steps:
-      - name: Checkout code
-
+      - name: Checkout Controller
         uses: actions/checkout@v4
+        with:
+          path: controller
+
+      - name: Checkout Remote Common
+        uses: actions/checkout@v4
+        with:
+          repository: medizininformatik-initiative/mii-processes-common
+          ref: issue/46_dsf-2.0.0
+          path: mii_common 
 
       - name: Set up JDK 25
 
@@ -41,8 +49,12 @@ jobs:
           </settings>
           EOF
 
+      - name: Build and Install Common Snapshot
+        working-directory: ./mii_common
+        run: mvn clean install -DskipTests
+        
       - name: Build with Maven
-
+        working-directory: ./controller
         run: mvn clean package
 
       - name: Upload artifact
