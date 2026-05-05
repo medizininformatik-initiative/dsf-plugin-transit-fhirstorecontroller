@@ -62,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: store-controller-jar
-          path: ${{ github.workspace }}/target/mii-store-controller-1.0.0.2.jar
+          path: ${{ github.workspace }}/controller/target/mii-store-controller-1.0.0.2.jar
 
   release:
     runs-on: ubuntu-latest
