@@ -28,6 +28,7 @@ public class PrepareStoreCreation implements ServiceTask
 		variables.setString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_BUSSINESS_KEY, bussinessKey);
 
 		String consortiumIdentifier = "medizininformatik-initiative.de";
+		//String consortiumIdentifier = "Parent_Organization";
         //String consortiumIdentifier = variables
 		// .getString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_CONSORTIUM_IDENTIFIER);
 
