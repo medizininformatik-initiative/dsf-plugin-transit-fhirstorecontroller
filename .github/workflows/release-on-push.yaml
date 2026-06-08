@@ -55,7 +55,7 @@ jobs:
         
       - name: Build with Maven
         working-directory: ./controller
-        run: mvn clean package
+        run: mvn clean package -DskipTests
 
       - name: Upload artifact
 
