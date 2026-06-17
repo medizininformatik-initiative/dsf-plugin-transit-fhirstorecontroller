@@ -41,5 +41,9 @@ public interface StoreControllerConstants
 	String PROFILE_TASK_CREATED_STORE = "http://datamanagementunit.eu/fhir/StructureDefinition/task-created-store";
 	String PROFILE_TASK_DELETE_STORE = "http://datamanagementunit.eu/fhir/StructureDefinition/task-delete-store";
 
+	//FHIR canonical
+	String PROFILE_TASK_CREATE_STORE_PROCESS_URI = "http://datamanagementunit.eu/bpe/Process/storeControllerCreate";
+	String PROFILE_TASK_DELETE_STORE_PROCESS_URI = "http://datamanagementunit.eu/bpe/Process/storeControllerDelete";
+
 	int TIMEOUT_MS = 10000;
 }

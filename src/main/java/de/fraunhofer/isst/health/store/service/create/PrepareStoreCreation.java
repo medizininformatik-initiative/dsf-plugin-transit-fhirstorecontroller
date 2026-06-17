@@ -27,7 +27,8 @@ public class PrepareStoreCreation implements ServiceTask
 		String bussinessKey = getBussinessKey(task, api);
 		variables.setString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_BUSSINESS_KEY, bussinessKey);
 
-		String consortiumIdentifier = "Parent_Organization";
+		String consortiumIdentifier = "medizininformatik-initiative.de";
+		//String consortiumIdentifier = "Parent_Organization";
         //String consortiumIdentifier = variables
 		// .getString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_CONSORTIUM_IDENTIFIER);
 
@@ -65,7 +66,7 @@ public class PrepareStoreCreation implements ServiceTask
 	{
 		Identifier parentIdentifier = NamingSystems.OrganizationIdentifier.withValue(consortiumIdentifier);
 		Coding role = new Coding().setSystem(ConstantsBase.CODESYSTEM_DSF_ORGANIZATION_ROLE)
-				.setCode(ConstantsBase.CODESYSTEM_DSF_ORGANIZATION_ROLE_VALUE_DIC);
+				.setCode(ConstantsBase.CODESYSTEM_DSF_ORGANIZATION_ROLE_VALUE_DMS);
 		return api.getEndpointProvider().getEndpoint(parentIdentifier, dicIdentifier, role)
 				.orElseThrow(() -> new RuntimeException(
 						"Could not find default endpoint of organization '" + dicIdentifier.getValue() + "'"));

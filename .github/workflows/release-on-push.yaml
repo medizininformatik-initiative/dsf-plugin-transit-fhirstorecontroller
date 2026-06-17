@@ -3,7 +3,7 @@ name: Build and Release
 on:
   push:
     branches:
-      - develop
+      - feature/dsf_2.1
 
 jobs:
   build:
@@ -14,15 +14,23 @@ jobs:
       packages: read
 
     steps:
-      - name: Checkout code
-
+      - name: Checkout Controller
         uses: actions/checkout@v4
+        with:
+          path: controller
 
-      - name: Set up JDK 17
+      - name: Checkout Remote Common
+        uses: actions/checkout@v4
+        with:
+          repository: medizininformatik-initiative/mii-processes-common
+          ref: issue/46_dsf-2.0.0
+          path: mii_common 
+
+      - name: Set up JDK 25
 
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
 
@@ -41,16 +49,20 @@ jobs:
           </settings>
           EOF
 
+      - name: Build and Install Common Snapshot
+        working-directory: ./mii_common
+        run: mvn clean install -DskipTests
+        
       - name: Build with Maven
-
-        run: mvn clean package
+        working-directory: ./controller
+        run: mvn clean package -DskipTests
 
       - name: Upload artifact
 
         uses: actions/upload-artifact@v4
         with:
           name: store-controller-jar
-          path: ${{ github.workspace }}/target/mii-store-controller-1.0.0.1.jar
+          path: ${{ github.workspace }}/controller/target/mii-store-controller-1.0.0.2.jar
 
   release:
     runs-on: ubuntu-latest
@@ -71,9 +83,9 @@ jobs:
 
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: 'v1.0.0'
-          name: 'v1.0.0'
-          files: ./artifact/mii-store-controller-1.0.0.1.jar
+          tag_name: 'v1.0.0.2'
+          name: 'v1.0.0.2'
+          files: ./artifact/mii-store-controller-1.0.0.2.jar
           draft: false
           prerelease: false
         env:

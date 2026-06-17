@@ -138,6 +138,7 @@
 							<artifactSet>
 								<includes>
 									<include>de.medizininformatik-initiative:mii-processes-common</include>
+									<include>org.yaml:snakeyaml</include>
                                     <include>org.eclipse.jgit:org.eclipse.jgit</include>
 								</includes>
 							</artifactSet>
