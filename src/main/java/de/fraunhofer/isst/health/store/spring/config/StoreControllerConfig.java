@@ -1,6 +1,8 @@
 package de.fraunhofer.isst.health.store.spring.config;
 
 import de.fraunhofer.isst.health.store.message.SendCreatedStore;
+import de.fraunhofer.isst.health.store.questionnaire.ConfirmStoreListener;
+import de.fraunhofer.isst.health.store.service.create.CheckQuestionnaireStoreUrl;
 import de.fraunhofer.isst.health.store.service.create.CheckStoreCreated;
 import de.fraunhofer.isst.health.store.service.create.CreateKubernetesChart;
 import de.fraunhofer.isst.health.store.service.create.PrepareStoreCreation;
@@ -24,7 +26,7 @@ public class StoreControllerConfig
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public PrepareStoreCreation prepareStoreCreation()
 	{
-		return new PrepareStoreCreation();
+		return new PrepareStoreCreation(storeVariablesConfig);
 	}
 
 	@Bean
@@ -60,5 +62,21 @@ public class StoreControllerConfig
 	public CheckStoreDeleted checkStoreDeleted()
 	{
 		return new CheckStoreDeleted(storeVariablesConfig);
+	}
+
+
+	//Questionnare Handler
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public ConfirmStoreListener confirmStoreListener()
+	{
+		return new ConfirmStoreListener(storeVariablesConfig.isDmsEmailEnabled());
+	}
+
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public CheckQuestionnaireStoreUrl checkQuestionnaireStoreUrl()
+	{
+		return new CheckQuestionnaireStoreUrl();
 	}
 }

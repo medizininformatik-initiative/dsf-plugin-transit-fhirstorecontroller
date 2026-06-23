@@ -22,7 +22,7 @@ public class StoreControllerProcessPluginDefinitionTest
 
 		var create = resourcesByProcessId.get(StoreControllerConstants.PROCESS_NAME_FULL_STORE_CONTROLLER_CREATE);
 		assertNotNull(create);
-		assertEquals(7, create.stream().filter(this::exists).count());
+		assertEquals(8, create.stream().filter(this::exists).count());
 
 		var delete = resourcesByProcessId.get(StoreControllerConstants.PROCESS_NAME_FULL_STORE_CONTROLLER_DELETE);
 		assertNotNull(delete);

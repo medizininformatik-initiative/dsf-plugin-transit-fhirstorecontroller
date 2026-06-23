@@ -1,6 +1,7 @@
 package de.fraunhofer.isst.health.store.service.create;
 
 import de.fraunhofer.isst.health.store.StoreControllerConstants;
+import de.fraunhofer.isst.health.store.spring.config.StoreVariablesConfig;
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
 import dev.dsf.bpe.v2.ProcessPluginApi;
 import dev.dsf.bpe.v2.activity.ServiceTask;
@@ -16,6 +17,12 @@ public class PrepareStoreCreation implements ServiceTask
 {
 	private static final Logger logger = LoggerFactory.getLogger(PrepareStoreCreation.class);
 
+	private final StoreVariablesConfig storeVariablesConfig;
+
+	public PrepareStoreCreation(StoreVariablesConfig storeVariablesConfig) {
+		this.storeVariablesConfig = storeVariablesConfig;
+	}
+
 	@Override
 	public void execute(ProcessPluginApi api, Variables variables)
 	{
@@ -27,8 +34,10 @@ public class PrepareStoreCreation implements ServiceTask
 		String bussinessKey = getBussinessKey(task, api);
 		variables.setString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_BUSSINESS_KEY, bussinessKey);
 
-		String consortiumIdentifier = "medizininformatik-initiative.de";
-		//String consortiumIdentifier = "Parent_Organization";
+		variables.setBoolean(StoreControllerConstants.BPMN_EXECUTION_KUBERNETES, storeVariablesConfig.isKubernetes());
+
+		//String consortiumIdentifier = "medizininformatik-initiative.de";
+		String consortiumIdentifier = "Parent_Organization";
         //String consortiumIdentifier = variables
 		// .getString(StoreControllerConstants.BPMN_EXECUTION_VARIABLE_CONSORTIUM_IDENTIFIER);
 

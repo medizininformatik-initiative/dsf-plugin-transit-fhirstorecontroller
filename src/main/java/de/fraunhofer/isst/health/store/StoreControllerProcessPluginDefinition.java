@@ -53,6 +53,8 @@ public class StoreControllerProcessPluginDefinition implements ProcessPluginDefi
 		var sTcreateStore = "fhir/StructureDefinition/task-create-store.xml";
 		var sTcreatedStore = "fhir/StructureDefinition/task-created-store.xml";
 
+		var qConfirmStore = "fhir/Questionnaire/questionnaire-confirm--store-url.xml";
+
 		//Store Controller Delete
 		var aStoreDelete = "fhir/ActivityDefinition/store-controller-delete.xml";
 
@@ -66,7 +68,7 @@ public class StoreControllerProcessPluginDefinition implements ProcessPluginDefi
 
 		return Map.of(
 				StoreControllerConstants.PROCESS_NAME_FULL_STORE_CONTROLLER_CREATE, //
-				List.of(aStoreCreate, sTcreateStore, sTcreatedStore, cDmuTools, vDmuTools, cDaSh, vDaSh),
+				List.of(aStoreCreate, sTcreateStore, sTcreatedStore, cDmuTools, vDmuTools, cDaSh, vDaSh, qConfirmStore),
 				StoreControllerConstants.PROCESS_NAME_FULL_STORE_CONTROLLER_DELETE, //
 				List.of(aStoreDelete, sTdeleteStore, cDmuTools, vDmuTools));
 	}

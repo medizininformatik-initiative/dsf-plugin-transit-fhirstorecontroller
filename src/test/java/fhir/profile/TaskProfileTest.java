@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import de.fraunhofer.isst.health.store.StoreControllerConstants;
 import de.fraunhofer.isst.health.store.StoreControllerProcessPluginDefinition;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import ca.uhn.fhir.validation.ResultSeverityEnum;
 import ca.uhn.fhir.validation.ValidationResult;
 import de.medizininformatik_initiative.processes.common.util.ConstantsBase;
-import de.medizininformatik_initiative.processes.common.util.DataSetStatusGenerator;
 import dev.dsf.bpe.v2.constants.CodeSystems;
 import dev.dsf.bpe.v2.constants.NamingSystems;
 import dev.dsf.fhir.validation.ResourceValidator;
@@ -38,9 +36,9 @@ public class TaskProfileTest {
             List.of("dsf-task-2.0.0.xml", "task-create-store.xml",
                     "task-delete-store.xml", "task-created-store.xml"),
             List.of("dsf-read-access-tag-2.0.0.xml", "dsf-bpmn-message-2.0.0.xml", "dmu-tools.xml", "data-sharing.xml",
-                    "mii-cryptography.xml", "mii-data-set-status.xml"),
+                    "mii-data-set-status.xml"),
             List.of("dsf-read-access-tag-2.0.0.xml", "dsf-bpmn-message-2.0.0.xml", "dmu-tools.xml", "data-sharing.xml",
-                    "mii-cryptography.xml", "mii-data-set-status-receive.xml", "mii-data-set-status-send.xml"));
+                     "mii-data-set-status-receive.xml", "mii-data-set-status-send.xml"));
 
     private final ResourceValidator resourceValidator = new ResourceValidatorImpl(validationRule.getFhirContext(),
             validationRule.getValidationSupport());
