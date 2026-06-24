@@ -1,25 +1,19 @@
 package de.fraunhofer.isst.health.store.service.create;
 
 import de.fraunhofer.isst.health.store.StoreControllerConstants;
-import dev.dsf.bpe.v1.ProcessPluginApi;
-import dev.dsf.bpe.v1.activity.AbstractServiceDelegate;
-import dev.dsf.bpe.v1.variables.Variables;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
+import dev.dsf.bpe.v2.ProcessPluginApi;
+import dev.dsf.bpe.v2.activity.ServiceTask;
+import dev.dsf.bpe.v2.variables.Variables;
 import org.hl7.fhir.r4.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CreateDockerStore extends AbstractServiceDelegate
+public class CreateDockerStore implements ServiceTask
 {
 	private static final Logger logger = LoggerFactory.getLogger(CreateDockerStore.class);
 
-	public CreateDockerStore(ProcessPluginApi api)
-	{
-		super(api);
-	}
-
 	@Override
-	protected void doExecute(DelegateExecution execution, Variables variables)
+	public void execute(ProcessPluginApi api, Variables variables)
 	{
 		Task task = variables.getStartTask();
 
@@ -32,5 +26,4 @@ public class CreateDockerStore extends AbstractServiceDelegate
 				projectIdentifier,
 				task.getId());
 	}
-
 }

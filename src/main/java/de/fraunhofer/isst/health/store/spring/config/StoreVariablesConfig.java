@@ -1,6 +1,6 @@
 package de.fraunhofer.isst.health.store.spring.config;
 
-import dev.dsf.bpe.v1.documentation.ProcessDocumentation;
+import dev.dsf.bpe.v2.documentation.ProcessDocumentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +43,18 @@ public class StoreVariablesConfig
 	@Value("${eu.datamanagementunit.store.git.credentials:#{null}}")
 	private String gitCredentials;
 
+	@ProcessDocumentation(processNames = {
+			"datamanagementuniteu_storeControllerCreate" },
+			description = "Kubernetes Deployment",
+			example = "false")
+	@Value("${eu.datamanagementunit.store.kubernetes:false}")
+	private boolean kubernetes;
+
+	@ProcessDocumentation(processNames = {
+			"medizininformatik-initiativede_mergeDataSharing" }, description = "To receive e-mails as DMS, set to `true`")
+	@Value("${de.medizininformatik.initiative.data.sharing.dms.email.enabled:false}")
+	private boolean dmsEmailEnabled;
+
 
 	public String getStoreHostname()
 	{
@@ -67,5 +79,13 @@ public class StoreVariablesConfig
 	public String getGitCredentials()
 	{
 		return gitCredentials;
+	}
+
+	public boolean isDmsEmailEnabled() {
+		return dmsEmailEnabled;
+	}
+
+	public boolean isKubernetes() {
+		return kubernetes;
 	}
 }

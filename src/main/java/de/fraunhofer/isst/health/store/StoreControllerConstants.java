@@ -26,5 +26,33 @@ public interface StoreControllerConstants
 
 	String STORE_STATUS = "store-status";
 
+	String BPMN_EXECUTION_VARIABLE_CONSORTIUM_IDENTIFIER = "consortium-identifie";
+
+	// Message names
+	String MESSAGE_NAME_CREATE = "createFhirStore";
+	String MESSAGE_NAME_CREATED = "createdStore";
+	String MESSAGE_NAME_DELETE = "deleteFhirStore";
+
+	// Naming system for project identifier
+	String NAMINGSYSTEM_MII_PROJECT_IDENTIFIER = "http://medizininformatik-initiative.de/sid/project-identifier";
+
+	// FHIR profiles (base URLs without version)
+	String PROFILE_TASK_CREATE_STORE = "http://datamanagementunit.eu/fhir/StructureDefinition/task-create-store";
+	String PROFILE_TASK_CREATED_STORE = "http://datamanagementunit.eu/fhir/StructureDefinition/task-created-store";
+	String PROFILE_TASK_DELETE_STORE = "http://datamanagementunit.eu/fhir/StructureDefinition/task-delete-store";
+
+	//FHIR canonical
+	String PROFILE_TASK_CREATE_STORE_PROCESS_URI = "http://datamanagementunit.eu/bpe/Process/storeControllerCreate";
+	String PROFILE_TASK_DELETE_STORE_PROCESS_URI = "http://datamanagementunit.eu/bpe/Process/storeControllerDelete";
+
+	//Kubernetes
+	String BPMN_EXECUTION_KUBERNETES = "kubernetes";
+
 	int TIMEOUT_MS = 10000;
+
+	//Questionnare
+	String QUESTIONNAIRES_ITEM_DISPLAY = "display";
+	String QUESTIONNAIRES_ITEM_RELEASE = "release";
+	String QUESTIONNAIRES_PLACEHOLDER_PROJECT_IDENTIFIER = "{project-identifier-placeholder}";
+	String QUESTIONNAIRES_ITEM_STORE_URL = "store-url";
 }

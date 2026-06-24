@@ -1,0 +1,45 @@
+<Questionnaire xmlns="http://hl7.org/fhir">
+	<meta>
+		<profile value="http://dsf.dev/fhir/StructureDefinition/questionnaire" />
+		<tag>
+			<system value="http://dsf.dev/fhir/CodeSystem/read-access-tag"/>
+			<code value="ALL"/>
+		</tag>
+	</meta>
+	<url value="http://datamanagementunit.eu/fhir/Questionnaire/confirm-store-url"/>
+	<!-- version managed by bpe -->
+	<version value="#{version}"/>
+	<!-- date managed by bpe -->
+	<date value="#{date}"/>
+	<!-- status managed by bpe -->
+	<status value="unknown"/>
+	<item>
+		<linkId value="business-key"/>
+		<type value="string"/>
+		<text value="The business-key of the process execution"/>
+		<required value="true"/>
+	</item>
+	<item>
+		<linkId value="user-task-id"/>
+		<type value="string"/>
+		<text value="The user-task-id of the process execution"/>
+		<required value="true"/>
+	</item>
+	<item>
+		<linkId value="display"/>
+		<type value="display"/>
+		<text value="{project-identifier-placeholder} confirm store url: This user-task confirms the storre url for the project {project-identifier-placeholder}."/>
+	</item>
+	<item>
+		<linkId value="store-url"/>
+		<type value="url"/>
+		<text value="Please type the URL of the store."/>
+		<required value="true"/>
+	</item>
+	<item>
+		<linkId value="release"/>
+		<type value="string"/>
+		<text value="To confirm the store url please type in the project identifier."/>
+		<required value="true"/>
+	</item>
+</Questionnaire>
