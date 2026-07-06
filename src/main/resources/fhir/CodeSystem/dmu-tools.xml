@@ -55,5 +55,10 @@
 		<definition value="Data Set Reference" />
 	</concept>
 
+	<concept>
+		<code value="merge-task-id"/>
+		<display value="Merge Task Id"/>
+		<definition value="Reference with identifier of a merge-task-id"/>
+	</concept>
 
 </CodeSystem>
