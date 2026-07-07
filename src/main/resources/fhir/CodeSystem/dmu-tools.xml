@@ -27,4 +27,38 @@
 		<display value="Store Url"/>
 		<definition value="Reference with identifier of a store url"/>
 	</concept>
+	<concept>
+		<code value="timer-interval" />
+		<display value="Timer Interval" />
+		<definition value="Interval between two autostarts of the Transit process" />
+	</concept>
+	<concept>
+		<code value="document-reference" />
+		<display value="Document Reference" />
+		<definition value="Document Reference ID" />
+	</concept>
+	<concept>
+		<code value="questionnare-response" />
+		<display value="Questionnare Response" />
+		<definition value="Questionnare Response ID" />
+	</concept>
+
+	<concept>
+		<code value="data-integration-center" />
+		<display value="Data Integration Center" />
+		<definition value="Data integration center" />
+	</concept>
+
+	<concept>
+		<code value="data-set-reference" />
+		<display value="Data Set Reference" />
+		<definition value="Data Set Reference" />
+	</concept>
+
+	<concept>
+		<code value="merge-task-id"/>
+		<display value="Merge Task Id"/>
+		<definition value="Reference with identifier of a merge-task-id"/>
+	</concept>
+
 </CodeSystem>
