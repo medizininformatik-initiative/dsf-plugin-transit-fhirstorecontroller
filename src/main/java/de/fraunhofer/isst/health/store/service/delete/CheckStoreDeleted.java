@@ -31,6 +31,7 @@ public class CheckStoreDeleted implements ServiceTask {
                 task.getId());
 
         DsfClient client = getDsfClientForFhirStore(api.getDsfClientProvider(), storeUrl);
+
         try
         {
             client.getConformance();
