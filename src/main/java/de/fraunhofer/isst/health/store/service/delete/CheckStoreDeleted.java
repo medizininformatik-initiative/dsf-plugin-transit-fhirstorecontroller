@@ -1,7 +1,6 @@
 package de.fraunhofer.isst.health.store.service.delete;
 
 import de.fraunhofer.isst.health.store.StoreControllerConstants;
-import de.fraunhofer.isst.health.store.spring.config.StoreVariablesConfig;
 import dev.dsf.bpe.v2.ProcessPluginApi;
 import dev.dsf.bpe.v2.activity.ServiceTask;
 import dev.dsf.bpe.v2.client.dsf.DsfClient;
@@ -13,10 +12,8 @@ import org.slf4j.LoggerFactory;
 
 public class CheckStoreDeleted implements ServiceTask {
     private static final Logger logger = LoggerFactory.getLogger(CheckStoreDeleted.class);
-    private final StoreVariablesConfig storeVariablesConfig;
 
-    public CheckStoreDeleted(StoreVariablesConfig storeVariablesConfig) {
-        this.storeVariablesConfig = storeVariablesConfig;
+    public CheckStoreDeleted() {
     }
 
     @Override

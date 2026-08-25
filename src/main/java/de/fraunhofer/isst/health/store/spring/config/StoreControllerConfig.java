@@ -33,7 +33,7 @@ public class StoreControllerConfig
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public CheckStoreCreated checkStoreCreated()
 	{
-		return new CheckStoreCreated(storeVariablesConfig);
+		return new CheckStoreCreated();
 	}
 
 	@Bean
@@ -61,9 +61,8 @@ public class StoreControllerConfig
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public CheckStoreDeleted checkStoreDeleted()
 	{
-		return new CheckStoreDeleted(storeVariablesConfig);
+		return new CheckStoreDeleted();
 	}
-
 
 	//Questionnare Handler
 	@Bean

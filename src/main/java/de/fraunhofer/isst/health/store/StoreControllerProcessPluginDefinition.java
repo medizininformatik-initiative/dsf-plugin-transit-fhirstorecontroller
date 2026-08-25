@@ -67,9 +67,9 @@ public class StoreControllerProcessPluginDefinition implements ProcessPluginDefi
 		var vDaSh = "fhir/ValueSet/data-sharing.xml";
 
 		return Map.of(
-				StoreControllerConstants.PROCESS_NAME_FULL_STORE_CONTROLLER_CREATE, //
+				StoreControllerConstants.PROCESS_NAME_FULL_STORE_CONTROLLER_CREATE,
 				List.of(aStoreCreate, sTcreateStore, sTcreatedStore, cDmuTools, vDmuTools, cDaSh, vDaSh, qConfirmStore),
-				StoreControllerConstants.PROCESS_NAME_FULL_STORE_CONTROLLER_DELETE, //
+				StoreControllerConstants.PROCESS_NAME_FULL_STORE_CONTROLLER_DELETE,
 				List.of(aStoreDelete, sTdeleteStore, cDmuTools, vDmuTools));
 	}
 }

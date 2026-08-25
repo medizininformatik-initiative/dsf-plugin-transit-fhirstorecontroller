@@ -16,7 +16,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,21 +89,6 @@ public class CreateKubernetesChart implements ServiceTask
 
 		data.put("stores", stores);
 		writeYaml(data, values);
-
-
-//		File db = repositoryManagement.readFile("development/dmu/templates/databases/","dmu-stores-db.yaml");
-//		data = loadYaml(db);
-//		// Navigate to spec -> databases
-//		Map<String, Object> spec = (Map<String, Object>) data.get("spec");
-//		Map<String, String> databases = (Map<String, String>) spec.get("databases");
-//		// If databases section doesn't exist, initialize it
-//		if (databases == null) {
-//			databases = new LinkedHashMap<>();
-//		}
-//		// Add a new database
-//		databases.put("db"+storeId, "fhirstoreuser");
-//		spec.put("databases", databases);
-//		writeYaml(data, db);
 
 		repositoryManagement.addAll();
 		repositoryManagement.commit("Added File Storage to archive project with id " + storeId);
