@@ -92,17 +92,6 @@ public class DeleteStore implements ServiceTask {
         stores.remove(storeResults.get(0));
         writeYaml(data, values);
 
-        //Delete entries in dmu-stores-db.yaml
-//        File db = repositoryManagement.readFile("development/dmu/templates/databases/","dmu-stores-db.yaml");
-//        data = loadYaml(db);
-//
-//        Map<String, Object> spec = (Map<String, Object>) data.get("spec");
-//        Map<String, String> databases = (Map<String, String>) spec.get("databases");
-//
-//        String dbId = "db"+storeId;
-//        databases.remove(dbId);
-//        writeYaml(data, db);
-
         logger.info("Commiting changes");
         repositoryManagement.addAll();
         repositoryManagement.commit("Removed FHIR-Store with id " + storeId);

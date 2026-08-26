@@ -1,7 +1,6 @@
 package de.fraunhofer.isst.health.store.service.create;
 
 import de.fraunhofer.isst.health.store.StoreControllerConstants;
-import de.fraunhofer.isst.health.store.spring.config.StoreVariablesConfig;
 import dev.dsf.bpe.v2.ProcessPluginApi;
 import dev.dsf.bpe.v2.activity.ServiceTask;
 import dev.dsf.bpe.v2.client.dsf.DsfClient;
@@ -15,11 +14,8 @@ public class CheckStoreCreated implements ServiceTask
 {
 	private static final Logger logger = LoggerFactory.getLogger(CheckStoreCreated.class);
 
-	private final StoreVariablesConfig storeVariablesConfig;
-
-	public CheckStoreCreated(StoreVariablesConfig storeVariablesConfig)
+	public CheckStoreCreated()
 	{
-		this.storeVariablesConfig = storeVariablesConfig;
 	}
 
 	@Override

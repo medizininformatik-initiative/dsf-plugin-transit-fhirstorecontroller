@@ -15,15 +15,13 @@ import dev.dsf.bpe.v2.variables.Variables;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Task;
 import org.hl7.fhir.r4.model.UrlType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SendCreatedStore implements MessageSendTask
 {
-	private static final Logger logger = LoggerFactory.getLogger(SendCreatedStore.class);
+	//private static final Logger logger = LoggerFactory.getLogger(SendCreatedStore.class);
 
 	@Override
 	public List<Task.ParameterComponent> getAdditionalInputParameters(ProcessPluginApi api, Variables variables,
